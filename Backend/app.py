@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import mysql.connector
 import os
+import threading
+import webview
+
 
 app = Flask(
     __name__,
@@ -54,12 +57,12 @@ init_db()
 
 # ---------------- SEED USERS ----------------
 USERS = [
-    ("ceo", "ceo123", "CEO"),
-    ("pm", "pm123", "PROJECT_MANAGER"),
-    ("lead", "lead123", "TEAM_LEAD"),
-    ("hr", "hr123", "HR"),
-    ("member1", "mem123", "TEAM_MEMBER"),
-    ("member2", "mem123", "TEAM_MEMBER")
+    ("Venkat S", "venkat123", "CEO"),
+    ("Dinesh", "dinesh123", "PROJECT_MANAGER"),
+    ("Shuba", "shuba123", "TEAM_LEAD"),
+    ("Guna", "guna123", "HR"),
+    ("Priya", "priya123", "TEAM_MEMBER"),
+    ("Guhan", "guhan123", "TEAM_MEMBER")
 ]
 
 def seed_users():
@@ -239,6 +242,30 @@ def serve_react(path="index.html"):
         return send_from_directory(app.static_folder, path)
     return send_from_directory(app.static_folder, "index.html")
 
-# ---------------- RUN ----------------
+# ---------------- START FLASK ----------------
+def start_flask():
+    app.run(
+        host="127.0.0.1",
+        port=5000,
+        debug=False,
+        use_reloader=False
+    )
+
+# ---------------- DESKTOP APP ENTRY ----------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Start Flask in background thread
+    flask_thread = threading.Thread(target=start_flask)
+    flask_thread.daemon = True
+    flask_thread.start()
+
+    # Open Desktop WebView
+    webview.create_window(
+        title="Efzo Task Manager",
+        url="http://127.0.0.1:5000",
+        width=1200,
+        height=800,
+        resizable=True
+    )
+
+    webview.start()
+

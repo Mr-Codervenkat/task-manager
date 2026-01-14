@@ -31,7 +31,6 @@ function AssignTask({ user }) {
 
     alert("Task assigned successfully");
 
-    // Reset form
     setTitle("");
     setAssignedTo("");
     setEmail("");
@@ -41,49 +40,57 @@ function AssignTask({ user }) {
   };
 
   return (
-    <div className="assign-task">
-      <h2>Assign Task</h2>
+    <div className="assign-wrapper">
+      <div className="assign-card">
+        <h2 className="assign-title">Assign Task</h2>
 
-      <input
-        placeholder="Task title"
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-      />
+        <div className="assign-grid">
+          <input
+            placeholder="Task Title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
 
-      <select value={assignedTo} onChange={e => setAssignedTo(e.target.value)}>
-        <option value="" hidden>Select User</option>
-        <option value="pm">Project Manager</option>
-        <option value="lead">Team Lead</option>
-        <option value="member1">Member 1</option>
-        <option value="member2">Member 2</option>
-      </select>
+          <select
+            value={assignedTo}
+            onChange={e => setAssignedTo(e.target.value)}
+          >
+            <option value="">Select User</option>
+            <option value="pm">Project Manager</option>
+            <option value="lead">Team Lead</option>
+            <option value="member1">Member 1</option>
+            <option value="member2">Member 2</option>
+          </select>
 
-      <input
-        placeholder="Email ID"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
+          <input
+            placeholder="Email ID"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
 
-      <textarea
-        placeholder="Task details"
-        value={description}
-        onChange={e => setDescription(e.target.value)}
-        rows="3"
-      />
+          <textarea
+            placeholder="Task Details"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
 
-      <input
-        type="date"
-        value={startDate}
-        onChange={e => setStartDate(e.target.value)}
-      />
+          <input
+            type="date"
+            value={startDate}
+            onChange={e => setStartDate(e.target.value)}
+          />
 
-      <input
-        type="date"
-        value={endDate}
-        onChange={e => setEndDate(e.target.value)}
-      />
+          <input
+            type="date"
+            value={endDate}
+            onChange={e => setEndDate(e.target.value)}
+          />
+        </div>
 
-      <button onClick={submitTask}>Assign</button>
+        <div className="assign-action">
+          <button onClick={submitTask}>Assign Task</button>
+        </div>
+      </div>
     </div>
   );
 }
