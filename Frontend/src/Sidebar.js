@@ -10,7 +10,10 @@ function Sidebar({ setPage }) {
       <button onClick={() => setPage("assign")}>Assign Task</button>
       <button onClick={() => setPage("history")}>History</button>
       </div>
-      <button className="logout-btn" onClick={() => window.location.reload()}>Logout</button>
+      <div className="logout-btn">
+      <button  onClick={() => setPage("settings")}>Settings</button>
+      <button  onClick={() => window.location.reload()}>Logout</button>
+      </div>
     </div>
   );
 }

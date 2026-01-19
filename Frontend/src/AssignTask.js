@@ -21,7 +21,7 @@ function AssignTask({ user }) {
         title,
         description,
         assigned_by: user.username,
-        assigned_to: assignedTo,
+        assigned_to: assignedTo,   // ✅ username only
         email,
         start_date: startDate,
         end_date: endDate,
@@ -56,10 +56,13 @@ function AssignTask({ user }) {
             onChange={e => setAssignedTo(e.target.value)}
           >
             <option value="">Select User</option>
-            <option value="pm">Project Manager</option>
-            <option value="lead">Team Lead</option>
-            <option value="member1">Member 1</option>
-            <option value="member2">Member 2</option>
+
+            {/* value = username | label = display text */}
+            <option value="Dinesh">Dinesh (PM)</option>
+            <option value="Guna">Guna (HR)</option>
+            <option value="Shuba">Shuba (Team Lead)</option>
+            <option value="Priya">Priya (Team Member)</option>
+            <option value="Guhan">Guhan (Team Member)</option>
           </select>
 
           <input

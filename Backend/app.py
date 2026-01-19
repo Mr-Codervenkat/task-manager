@@ -139,15 +139,15 @@ def add_task():
         allowed = True
 
     # Project Manager can assign to HR, Team Lead, Team Member
-    elif role == "PROJECT_MANAGER" and assigned_to in ["hr", "lead", "member1", "member2"]:
+    elif role == "PROJECT_MANAGER" and assigned_to in ["Guna - HR", "Shubha - TL", "Priya - TM", "Guhan TM"]:
         allowed = True
 
     # HR can assign to Team Lead and Team Member
-    elif role == "HR" and assigned_to in ["lead", "member1", "member2"]:
+    elif role == "HR" and assigned_to in ["Shubha - TL", "Priya - TM", "Guhan TM"]:
         allowed = True
 
     # Team Lead can assign only to Team Members
-    elif role == "TEAM_LEAD" and assigned_to in ["member1", "member2"]:
+    elif role == "TEAM_LEAD" and assigned_to in ["Priya - TM", "Guhan TM"]:
         allowed = True
 
     if not allowed:
@@ -184,17 +184,18 @@ def update_status():
     conn = get_db()
     cur = conn.cursor(dictionary=True)
 
-    # Get old task info
     cur.execute("SELECT * FROM tasks WHERE id=%s", (data["id"],))
     task = cur.fetchone()
 
-    # Update task status
+    # ✅ ONLY assigned user can update
+    if task["assigned_to"] != data["changed_by"]:
+        return jsonify({"error": "Not allowed"}), 403
+
     cur.execute(
         "UPDATE tasks SET status=%s WHERE id=%s",
         (data["status"], data["id"])
     )
 
-    # Insert into history
     cur.execute("""
         INSERT INTO task_history
         (task_id, title, assigned_by, assigned_to, old_status, new_status, changed_by)
@@ -213,6 +214,7 @@ def update_status():
     conn.close()
 
     return jsonify({"message": "Status updated"})
+
 
 
 @app.route("/api/history", methods=["GET"])

@@ -25,20 +25,23 @@ function TaskCard({ task, user, onReload, editable }) {
     task.assigned_to &&
     user.username.toLowerCase() === task.assigned_to.toLowerCase();
 
-  const updateStatus = async (newStatus) => {
-    setStatus(newStatus); // ✅ update UI immediately
+const updateStatus = async (newStatus) => {
+  setStatus(newStatus);
 
-    await fetch("http://localhost:5000/api/tasks/status", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: task.id,
-        status: newStatus
-      })
-    });
+  await fetch("http://localhost:5000/api/tasks/status", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: task.id,
+      status: newStatus,
+      changed_by: user.username   // ✅ ADD THIS
+    })
+  });
 
-    onReload(); // refresh tasks from backend
-  };
+  onReload();
+};
+
+
 
   return (
     <>
